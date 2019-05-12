@@ -21,18 +21,18 @@ namespace Laborator2.Controllers
 
         // GET: api/Tasks
         [HttpGet]
-        public IEnumerable<Models.Task> Get([FromQuery]DateTime? deadlineFrom, [FromQuery]DateTime? deadlineTo)
+        public IEnumerable<Models.Task> Get([FromQuery]DateTime? dlFrom, [FromQuery]DateTime? dlTo)
         {
             IQueryable<Models.Task> result = context.Tasks.Include(t => t.Comments);
 
-            if (deadlineFrom == null && deadlineTo == null)
+            if (dlFrom == null && dlTo == null)
                 return result;
 
-            if (deadlineFrom != null)
-                result = result.Where(t => t.Deadline >= deadlineFrom);
+            if (dlFrom != null)
+                result = result.Where(t => t.Deadline >= dlFrom);
 
-            if (deadlineTo != null)
-                result = result.Where(t => t.Deadline <= deadlineTo);
+            if (dlTo != null)
+                result = result.Where(t => t.Deadline <= dlTo);
 
             return result;
         }
@@ -88,7 +88,7 @@ namespace Laborator2.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var existing = context.Tasks.FirstOrDefault(t => t.Id == id);
+            var existing = context.Tasks.Include(t => t.Comments).FirstOrDefault(t => t.Id == id);
             if (existing == null)
             {
                 return NotFound();
