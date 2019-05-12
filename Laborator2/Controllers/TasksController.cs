@@ -21,18 +21,18 @@ namespace Laborator2.Controllers
 
         // GET: api/Tasks
         [HttpGet]
-        public IEnumerable<Models.Task> Get([FromQuery]DateTime? dlFrom, [FromQuery]DateTime? dlTo)
+        public IEnumerable<Models.Task> Get([FromQuery]DateTime? from, [FromQuery]DateTime? to)
         {
             IQueryable<Models.Task> result = context.Tasks.Include(t => t.Comments);
 
-            if (dlFrom == null && dlTo == null)
+            if (from == null && to == null)
                 return result;
 
-            if (dlFrom != null)
-                result = result.Where(t => t.Deadline >= dlFrom);
+            if (from != null)
+                result = result.Where(t => t.Deadline >= from);
 
-            if (dlTo != null)
-                result = result.Where(t => t.Deadline <= dlTo);
+            if (to != null)
+                result = result.Where(t => t.Deadline <= to);
 
             return result;
         }
